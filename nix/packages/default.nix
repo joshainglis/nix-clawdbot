@@ -1,8 +1,9 @@
-{ pkgs
-, sourceInfo ? import ../sources/clawdbot-source.nix
-, steipetePkgs ? {}
-, toolNamesOverride ? null
-, excludeToolNames ? []
+{
+  pkgs,
+  sourceInfo ? import ../sources/clawdbot-source.nix,
+  steipetePkgs ? { },
+  toolNamesOverride ? null,
+  excludeToolNames ? [ ],
 }:
 let
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
@@ -26,8 +27,10 @@ let
     clawdbot-app = clawdbotApp;
     extendedTools = toolSets.tools;
   };
-in {
+in
+{
   clawdbot-gateway = clawdbotGateway;
   clawdbot = clawdbotBundle;
   clawdbot-tools = clawdbotTools;
-} // (if isDarwin then { clawdbot-app = clawdbotApp; } else {})
+}
+// (if isDarwin then { clawdbot-app = clawdbotApp; } else { })

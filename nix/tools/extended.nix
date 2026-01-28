@@ -1,19 +1,26 @@
-{ pkgs
-, steipetePkgs ? {}
-, toolNamesOverride ? null
-, excludeToolNames ? []
+{
+  pkgs,
+  steipetePkgs ? { },
+  toolNamesOverride ? null,
+  excludeToolNames ? [ ],
 }:
 let
   lib = pkgs.lib;
   safe = list: builtins.filter (p: p != null) list;
-  pickFrom = scope: name:
+  pickFrom =
+    scope: name:
     if builtins.hasAttr name scope then
-      let pkg = scope.${name}; in
+      let
+        pkg = scope.${name};
+      in
       if lib.meta.availableOn pkgs.stdenv.hostPlatform pkg then pkg else null
     else
       null;
-  pick = name:
-    let fromSteipete = pickFrom steipetePkgs name; in
+  pick =
+    name:
+    let
+      fromSteipete = pickFrom steipetePkgs name;
+    in
     if fromSteipete != null then fromSteipete else pickFrom pkgs name;
   ensure = names: safe (map pick names);
 
@@ -54,7 +61,8 @@ let
   toolNamesBase = if toolNamesOverride != null then toolNamesOverride else baseNames ++ extraNames;
   toolNames = builtins.filter (name: !builtins.elem name excludeToolNames) toolNamesBase;
 
-in {
+in
+{
   tools = ensure toolNames;
   toolNames = toolNames;
 }

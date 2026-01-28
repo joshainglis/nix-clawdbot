@@ -8,12 +8,22 @@
     nix-clawdbot.url = "github:clawdbot/nix-clawdbot";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-clawdbot }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nix-clawdbot,
+    }:
     let
       # REPLACE: aarch64-darwin (Apple Silicon), x86_64-darwin (Intel), or x86_64-linux
       system = "<system>";
-      pkgs = import nixpkgs { inherit system; overlays = [ nix-clawdbot.overlays.default ]; };
-    in {
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ nix-clawdbot.overlays.default ];
+      };
+    in
+    {
       # REPLACE: <user> with your username (run `whoami`)
       homeConfigurations."<user>" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
@@ -40,7 +50,9 @@
                   allowFrom = [ <allowFrom> ];
                   # Group defaults (required in Nix mode):
                   groups = {
-                    "*" = { requireMention = true; };
+                    "*" = {
+                      requireMention = true;
+                    };
                   };
                 };
                 providers.anthropic = {

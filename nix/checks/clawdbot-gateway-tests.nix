@@ -1,19 +1,20 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, fetchurl
-, nodejs_22
-, pnpm_10
-, bun
-, pkg-config
-, jq
-, python3
-, node-gyp
-, vips
-, git
-, zstd
-, sourceInfo
-, pnpmDepsHash ? (sourceInfo.pnpmDepsHash or null)
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  fetchurl,
+  nodejs_22,
+  pnpm_10,
+  bun,
+  pkg-config,
+  jq,
+  python3,
+  node-gyp,
+  vips,
+  git,
+  zstd,
+  sourceInfo,
+  pnpmDepsHash ? (sourceInfo.pnpmDepsHash or null),
 }:
 
 let
@@ -41,9 +42,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   pnpmDeps = pnpm_10.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = if pnpmDepsHash != null
-      then pnpmDepsHash
-      else lib.fakeHash;
+    hash = if pnpmDepsHash != null then pnpmDepsHash else lib.fakeHash;
     fetcherVersion = 2;
     npm_config_arch = pnpmArch;
     npm_config_platform = pnpmPlatform;

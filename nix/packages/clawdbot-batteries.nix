@@ -1,8 +1,9 @@
-{ lib
-, buildEnv
-, clawdbot-gateway
-, clawdbot-app ? null
-, extendedTools ? []
+{
+  lib,
+  buildEnv,
+  clawdbot-gateway,
+  clawdbot-app ? null,
+  extendedTools ? [ ],
 }:
 
 let
